@@ -28,9 +28,11 @@ def scan(ip):
     print(arp_request_broadcast.summary())
     arp_request_broadcast.show()
     # send packet and capture response
-    answered, unanswered = scapy.srp(arp_request_broadcast, timeout=1)
-    print(f"answered: {answered.summary()}")
-    print(f"unanswered: {unanswered.summary()}")
+    answered_list, unanswered_list = scapy.srp(arp_request_broadcast, timeout=1)
+    print(answered_list)
+    print (unanswered_list)
+    print(f"answered: {answered_list.summary()}")
+    print(f"unanswered: {unanswered_list.summary()}")
 
 
 
