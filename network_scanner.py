@@ -32,11 +32,18 @@ def scan(ip):
     # print(arp_request_broadcast.summary())
     #arp_request_broadcast.show()
     # send packet and capture response
+    # return data as a list of dictionaries
+    clients_lists = []
     answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
-    return answered_list
+    for element in answered_list:
+        clients_lists.append({"ip": element[1].psrc, "mac": element[1].hwsrc})
+        # print(f"{element[1].psrc}\t\t{element[1].hwsrc}")
+    print(clients_lists)
+    return clients_lists
 
 
-def address_output(answered_list):
+
+def address_output(clients_list):
     #parses response and prints it
     # print(answered_list)
     # print(unanswered_list)
@@ -59,9 +66,10 @@ def address_output(answered_list):
     # pdst = 192.168.0.32
     # ###[ Padding ]###
     # load = '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    # interate over nested data
     print("IP\t\t\tMAC Address\n------------------------------------")
-    for element in answered_list:
-        print(f"{element[1].psrc}\t\t{element[1].hwsrc}")
+    for client in clients_list:
+        print(f"{client['ip']}\t\t{client['mac']}")
 
 
 if __name__ == "__main__":
