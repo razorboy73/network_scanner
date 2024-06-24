@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import argparse
 import scapy.all as scapy
 from scapy.layers.l2 import *
 
@@ -12,7 +12,20 @@ Print response
 
 
 def main():
-    address_output(scan("192.168.0.1/24"))
+    ip_range = get_command_line_args()
+    address_output(scan(ip_range))
+
+
+def get_command_line_args():
+    parser = argparse.ArgumentParser(description='Input the ip ranges you want to scan in CIDR notation')
+    parser.add_argument("-ip", "--ip_range", dest="ip", type=str, help='The ip range you want to scan in CIDR')
+
+    args = parser.parse_args()
+    print(f'IP Ranges: {args.ip}')
+    if not args.ip:
+        parser.error("[-] Please specify an IP range --help for assistance")
+    # handled errors for the mac address within the arguments
+    return args.ip
 
 
 def scan(ip):
